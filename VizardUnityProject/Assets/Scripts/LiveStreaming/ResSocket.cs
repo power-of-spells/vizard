@@ -51,17 +51,18 @@ public class ResSocket
     }
 
     /// <summary>
-    /// Connect to the two-way socket address
+    /// Bind to the two-way socket address
     /// and start the response socket listener thread
     /// </summary>
     /// <returns>True if start-up of socket is successful</returns>
+    // 在 Vizard 端监听双向地址，等待 Basilisk 的请求套接字连接。
     public bool Start()
     {
         listenerCancelled = false;
         try
         {
             AsyncIO.ForceDotNet.Force();
-            Debug.Log($"Trying to connect to {address}");
+            Debug.Log($"Response socket listening on {address}.");
             server = new ResponseSocket("@" + address);
         }
         catch
@@ -90,13 +91,10 @@ public class ResSocket
     /// Provides the receive and response to messages on the socket while listenerCancelled
     /// flag is false. If listenerCancelled is true, disposes of the response socket.
     /// </summary>
+    // 在工作线程处理已绑定套接字收到的请求及其回复。
     private void ListenerWork()
     {
         AsyncIO.ForceDotNet.Force();
-        Debug.Log("Response socket connecting to " + address + ".");
-
-        server.Connect(address);
-
         while (!listenerCancelled)
         {
             NetMQMessage message = new NetMQMessage();

@@ -256,6 +256,7 @@ public static class VizardGUISettings
         return currentSprite;
     }
 
+    // 生成天体与航天器选项，并为带有执行器的航天器添加子菜单提示。
     public static List<string> CreateBodyListForDropdown(TMP_Dropdown dropdown, string option0Label = "",
         bool includeLocations = false, bool includePlanets = true, bool includeSpacecraft = true,
         bool excludeEffectors = true)
@@ -309,7 +310,7 @@ public static class VizardGUISettings
                                 sc.name, option0Label);
                             effDropdown.SetActive(false);
 
-                            options.Add(new TMP_Dropdown.OptionData(sc.name, hoverDropdown.arrowSprite, Color.white));
+                            options.Add(new TMP_Dropdown.OptionData(sc.name, hoverDropdown.arrowSprite));
                         }
                         else
                         {

@@ -280,6 +280,7 @@ public class StartUpScreenManager : MonoBehaviour
     /// <summary>
     /// Configure DirectCommController and DataManager for user settings and trigger transition to VizardMainScene
     /// </summary>
+    // 根据启动页选项打开记录或连接仿真，并等待首帧数据后切换场景。
     public void StartVisualizationButtonClicked()
     {
         UpdateDataManagerSettings();
@@ -321,11 +322,12 @@ public class StartUpScreenManager : MonoBehaviour
         }
 
         DateTime startTime = DateTime.Now;
+        double firstMessageTimeout = DataManager.IsLiveSim ? 5.0 : 0.5;
         while (MessageList.TimestepsTotal < 1)
         {
             Debug.Log("Waiting for messages to load.");
             TimeSpan interval = DateTime.Now - startTime;
-            if (interval.TotalSeconds > 0.5)
+            if (interval.TotalSeconds > firstMessageTimeout)
             {
                 Debug.Log("Timed out waiting for messages to load.");
                 if (DataManager.IsLiveSim)
